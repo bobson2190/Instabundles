@@ -1,0 +1,28 @@
+{
+  "name": "fanaticalism",
+  "description": "A discord bot-scraper for game bundles.",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "register": "ts-node scripts/register-commands.ts",
+    "migrate": "ts-node scripts/migrate.ts"
+  },
+  "dependencies": {
+    "@types/node-fetch": "^2.6.13",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0",
+    "discord.js": "^14.14.0",
+    "dotenv": "^16.0.0",
+    "node-fetch": "^2.7.0",
+    "pg": "^8.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/pg": "^8.10.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  }
+}
