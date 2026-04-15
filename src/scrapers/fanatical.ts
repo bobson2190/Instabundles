@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import { parseFanaticalBundle } from "../parsers/fanatical.parser";
-import { bundleExists, insertBundle } from "../db/bundles.repo";
+import { getBundle, getBundleThreadId, insertBundle } from "../db/bundles.repo";
+import { getSteamLink } from "../utils/steam";
 import { client } from "../discord/index";
 import { notifyNewBundle } from "../discord/notifier";
 
@@ -34,11 +35,24 @@ export async function checkFanaticalBundles() {
     for (const b of json.pickandmix) {
       if (b.type !== "bundle") continue;
       
-      if (await bundleExists("fanatical", b._id)) continue;
-
       const parsed = parseFanaticalBundle(
         b._id, b.slug, b.name, b.cover_image, b.type, b.sku, b.tiers, b.products, b.valid_until
       );
+
+      const storedBundle = await getBundle("fanatical", parsed.externalId);
+      if (storedBundle) {
+        const threadIds = await getBundleThreadId("fanatical", parsed.externalId);
+        if (!threadIds || threadIds.length === 0) {
+          console.log(`[Fanatical] Backfilling thread_id for ${parsed.name}`);
+          await notifyNewBundle(parsed);
+        }
+        continue;
+      }
+
+      await Promise.all(parsed.items.map(async (item) => {
+        const steamUrl = await getSteamLink(item.name);
+        if (steamUrl) item.url = steamUrl;
+      }));
 
       await insertBundle(parsed);
       console.log(`[Fanatical] New Bundle: ${parsed.name}`);

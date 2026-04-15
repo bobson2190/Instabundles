@@ -1,8 +1,10 @@
 export interface ParsedBundle {
-  store: "humble" | "fanatical" | "gmg";
+  store: "humble" | "fanatical" | "gmg" | "choice" | "humblebooks";
+  isChoice: boolean;
   externalId: string;
   slug: string;
   type: "game" | "book" | "elearning" | "unidentified";
+  threadId?: string[];
 
   name: string;
   url: string;

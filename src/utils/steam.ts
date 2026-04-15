@@ -28,7 +28,7 @@ export async function getSteamLink(gameName: string): Promise<string | null> {
 
     if (data.items && data.items.length > 0) {
       // Return the URL for the top result
-      return `https://store.steampowered.com/app/${data.items[0].id}`;
+      return `https://s.team/a/${data.items[0].id}`;
     }
 
     return null;

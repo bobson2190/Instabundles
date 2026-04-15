@@ -50,6 +50,7 @@ export function parseFanaticalBundle(
 
   return {
     store: "fanatical",
+    isChoice: false,
     externalId: _id,
     slug: slug,
     type: "game",

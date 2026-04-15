@@ -1,5 +1,22 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { getBundle } from '../../db/bundles.repo'; // You need to ensure this exists!
+
+export const data = new SlashCommandBuilder()
+  .setName('bundle')
+  .setDescription('Lookup a bundle details')
+  .addStringOption(option =>
+    option.setName('store')
+      .setDescription('The store to search')
+      .setRequired(true)
+      .addChoices(
+        { name: 'Humble Bundle', value: 'humble' },
+        { name: 'Fanatical', value: 'fanatical' },
+        { name: 'Green Man Gaming', value: 'gmg' }
+      ))
+  .addStringOption(option =>
+    option.setName('id')
+      .setDescription('The bundle ID or slug')
+      .setRequired(true));
 
 export async function handleBundleCommand(interaction: ChatInputCommandInteraction) {
   const store = interaction.options.getString('store', true);
